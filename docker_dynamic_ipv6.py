@@ -104,7 +104,7 @@ if __name__ == '__main__':
     for addr_info in ipv6_info[0]['addr_info']:
         if validity < addr_info['valid_life_time']:
             validity = addr_info['valid_life_time']
-            sys_ipv6_net = ipaddress.IPv6Network('%s/%s' %(add_info[local], addr_info['prefixlen']), strict=False)
+            sys_ipv6_net = ipaddress.IPv6Network('%s/%s' %(addr_info[local], addr_info['prefixlen']), strict=False)
 
     if not docker_sys_prefix_same(args.dockerconfig, sys_ipv6_net):
         update_docker_prefix(args.dockerconfig, sys_ipv6_net)
