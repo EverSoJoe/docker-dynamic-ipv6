@@ -45,11 +45,11 @@ def docker_sys_prefix_same(docker_config_file, sys_ipv6_net):
     with open(docker_config_file, 'r') as f:
         docker_config = json.load(f)
     docker_ipv6_net = ipaddress.IPv6Network(docker_config['fixed-cidr-v6'])
-    if docker_ipv6_net == sys_ipv6_net:
-        info('Provided prefix is the same as the one in the config')
+    if docker_ipv6_net.supernet() == sys_ipv6_net:
+        info('Provided supernet is the same as the subnet in the config')
         return True
     else:
-        info('Provided prefix is NOT the same as the one in the config')
+        info('Provided supernet is NOT the same as the subnet in the config')
         return False
 
 def update_docker_prefix(docker_config_file, sys_ipv6_net):
@@ -65,7 +65,8 @@ def update_docker_prefix(docker_config_file, sys_ipv6_net):
         return None
     with open(docker_config_file, 'r') as f:
         docker_config = json.load(f)
-    docker_config['fixed-cidr-v6'] = str(sys_ipv6_net)
+    *_, last_subnet = sys_ipv6_net
+    docker_config['fixed-cidr-v6'] = str(last_subnet)
     info('Writing new IPv6 prefix to docker config')
     with open(docker_config_file, 'w') as f:
         json.dump(docker_config, f, indent=4, sort_keys=True)
