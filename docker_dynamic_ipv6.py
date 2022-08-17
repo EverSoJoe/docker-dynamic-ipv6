@@ -65,7 +65,7 @@ def update_docker_prefix(docker_config_file, sys_ipv6_net):
         return None
     with open(docker_config_file, 'r') as f:
         docker_config = json.load(f)
-    *_, last_subnet = sys_ipv6_net.subnet()
+    *_, last_subnet = sys_ipv6_net.subnets()
     docker_config['fixed-cidr-v6'] = str(last_subnet)
     info('Writing new IPv6 prefix to docker config')
     with open(docker_config_file, 'w') as f:
