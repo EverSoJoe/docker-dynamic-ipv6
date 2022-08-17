@@ -102,6 +102,8 @@ if __name__ == '__main__':
 
     validity = 0
     for addr_info in ipv6_info[0]['addr_info']:
+        if addr_info == {}:
+            continue
         if validity < addr_info['valid_life_time']:
             validity = addr_info['valid_life_time']
             sys_ipv6_net = ipaddress.IPv6Network('%s/%s' %(addr_info['local'], addr_info['prefixlen']), strict=False)
