@@ -24,7 +24,7 @@ def get_global_ipv6(interface):
             'dev',args.interface,
             'scope','global'],
         capture_output=True)
-    if output.returncode is not 0:
+    if output.returncode != 0:
         error('Error while running system \'ip\' utility')
         error(output.stderr)   
         return None
@@ -78,7 +78,7 @@ def restart_docker():
     '''
     info('Restarting docker daemon')
     output = subprocess.run(['systemctl','restart','docker'], capture_output=True)
-    if output.returncode is not 0:
+    if output.returncode != 0:
         error('Error while restarting docker daemon')
         error(output.stderr)   
     else:
