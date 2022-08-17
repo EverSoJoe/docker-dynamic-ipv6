@@ -94,7 +94,22 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Tool to check if IPv6 prefix changed and update docker with the new one')
     parser.add_argument('-i', '--interface', required=True, help='Interface of which the IPv6 prefix should be taken')
     parser.add_argument('-d', '--dockerconfig', default=DOCKER_CONFIG_FILE, help='Path to the docker deamon config: Default %s' %(DOCKER_CONFIG_FILE))
+    parser.add_argument('-li', '--loginfo', action='store_true', help='If set also logs info messages')
+    parser.add_argument('-lf', '--logfile', help='File to log into')
     args = parser.parse_args()
+
+    log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    streamh = logging.StreamHandler()
+    streamh.setFormatter(log_formatter)
+    logging.getLogger().addHandler(streamh)
+
+    if args.loginfo:
+        logging.getLogger().setLevel(logging.INFO)
+
+    if args.logfile:
+        fileh = logging.FileHandler(args.logfile, 'a')
+        fileh.setFormatter(log_formatter)
+        logging.getLogger().addHandler(fileh)
 
     ipv6_info = get_global_ipv6(args.interface)
     if ipv6_info is None:
