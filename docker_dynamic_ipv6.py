@@ -9,6 +9,7 @@ if __name__ == '__main__':
     import shutil
 
     parser = argparse.ArgumentParser(description='Tool to check if IPv6 prefix changed and update docker with the new one')
+    parser.add_argument('-i', '--interface', required=True, help='Interface of which the IPv6 prefix should be taken')
     args = parser.parse_args()
 
     # check for the ip utility
@@ -17,3 +18,4 @@ if __name__ == '__main__':
         exit(1)
 
     output = subprocess.run(['ip','-6','-json','add','sh','dev',args.interface,'scope','global'])
+    print(output)
