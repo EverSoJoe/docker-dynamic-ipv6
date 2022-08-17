@@ -44,9 +44,8 @@ def docker_sys_prefix_same(docker_config_file, sys_ipv6_net):
         return None
     with open(docker_config_file, 'r') as f:
         docker_config = json.load(f)
-    docker_prefix = docker_config['']
-    system_prefix = ipaddress
-    if docker_prefix == system_prefix:
+    docker_ipv6_net = ipaddress.IPv6Network(docker_config['fixed-cidr-v6'])
+    if docker_ipv6_net == sys_ipv6_net:
         info('Provided prefix is the same as the one in the config')
         return True
     else:
