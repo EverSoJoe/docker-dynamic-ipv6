@@ -85,6 +85,16 @@ def restart_docker():
     else:
         info('Docker daemon restarted successfully')
 
+def check_tenatative(info):
+    if 'tentative' in info:
+        if info['tentative']:
+            return True
+    return False
+
+def check_private(ipv6):
+    result = ipaddress.IPv6Address(ipv6).is_private
+    return result
+
 if __name__ == '__main__':
     import argparse
     import logging
@@ -117,7 +127,7 @@ if __name__ == '__main__':
 
     validity = 0
     for addr_info in ipv6_info[0]['addr_info']:
-        if addr_info == {}:
+        if addr_info == {} or check_tenatative or check_private:
             continue
         if validity < addr_info['valid_life_time']:
             validity = addr_info['valid_life_time']
