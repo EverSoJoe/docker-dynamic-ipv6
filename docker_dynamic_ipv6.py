@@ -86,9 +86,8 @@ def restart_docker():
         info('Docker daemon restarted successfully')
 
 def check_tenatative(info):
-    if 'tentative' in info:
-        if info['tentative']:
-            return True
+    if 'tentative' and info['tentative']:
+        return True
     return False
 
 def check_private(ipv6):
