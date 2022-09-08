@@ -86,11 +86,23 @@ def restart_docker():
         info('Docker daemon restarted successfully')
 
 def check_tenatative(info):
+    '''
+    Checks if an ipv6 address has the tentative tag set to true
+
+    :param info ip address json: Output of the address info of the ip address show utilitya
+    :returns boolean:
+    '''
     if 'tentative' and info['tentative']:
         return True
     return False
 
 def check_private(ipv6):
+    '''
+    Checks if an ip address is a private ip address
+
+    :param ipv6 string: ipv6 address
+    :returns boolean:
+    '''
     result = ipaddress.IPv6Address(ipv6).is_private
     return result
 
