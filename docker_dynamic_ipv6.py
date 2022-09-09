@@ -139,6 +139,10 @@ if __name__ == '__main__':
             validity = addr_info['valid_life_time']
             sys_ipv6_net = ipaddress.IPv6Network('%s/%s' %(addr_info['local'], addr_info['prefixlen']), strict=False)
 
+    if not sys_ipv6_net:
+        error('System has no usable IPv6 address')
+        exit(1)
+
     if not docker_sys_prefix_same(args.dockerconfig, sys_ipv6_net):
         update_docker_prefix(args.dockerconfig, sys_ipv6_net)
         restart_docker()
