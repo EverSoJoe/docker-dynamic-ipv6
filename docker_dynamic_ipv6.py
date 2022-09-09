@@ -92,8 +92,11 @@ def check_tenatative(info):
     :param info ip address json: Output of the address info of the ip address show utilitya
     :returns boolean:
     '''
-    if 'tentative' and info['tentative']:
+    info('Checking if reported global ipv6 is tentative to the system')
+    if 'tentative' in info and info['tentative']:
+        info('Is tentative')
         return True
+    info('Is not tentative')
     return False
 
 def check_private(ipv6):
@@ -103,7 +106,12 @@ def check_private(ipv6):
     :param ipv6 string: ipv6 address
     :returns boolean:
     '''
+    info('Checks if reported global ipv6 address is private')
     result = ipaddress.IPv6Address(ipv6).is_private
+    if result:
+        info('Is private')
+    else:
+        info('Is not private')
     return result
 
 if __name__ == '__main__':
