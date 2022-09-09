@@ -23,7 +23,8 @@ def get_global_ipv6(interface):
             'ip','-6','-json',
             'address','show',
             'dev',args.interface,
-            'scope','global'],
+            'scope','global',
+            '-tentative'],
         capture_output=True)
     if output.returncode != 0:
         error('Error while running system \'ip\' utility')
@@ -85,20 +86,6 @@ def restart_docker():
     else:
         info('Docker daemon restarted successfully')
 
-def check_tenatative(info):
-    '''
-    Checks if an ipv6 address has the tentative tag set to true
-
-    :param info ip address json: Output of the address info of the ip address show utilitya
-    :returns boolean:
-    '''
-    info('Checking if reported global ipv6 is tentative to the system')
-    if 'tentative' in info and info['tentative']:
-        info('Is tentative')
-        return True
-    info('Is not tentative')
-    return False
-
 def check_private(ipv6):
     '''
     Checks if an ip address is a private ip address
@@ -146,7 +133,7 @@ if __name__ == '__main__':
 
     validity = 0
     for addr_info in ipv6_info[0]['addr_info']:
-        if addr_info == {} or check_tenatative or check_private:
+        if addr_info == {} or check_private:
             continue
         if validity < addr_info['valid_life_time']:
             validity = addr_info['valid_life_time']
