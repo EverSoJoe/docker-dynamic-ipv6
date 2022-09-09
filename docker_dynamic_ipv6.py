@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
     validity = 0
     for addr_info in ipv6_info[0]['addr_info']:
-        if addr_info == {} or check_private:
+        if addr_info == {} or check_private(add_info['local']):
             continue
         if validity < addr_info['valid_life_time']:
             validity = addr_info['valid_life_time']
